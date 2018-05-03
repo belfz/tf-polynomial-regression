@@ -1,0 +1,19 @@
+{
+  "name": "tf-polynomial-regression",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@tensorflow/tfjs": "^0.10.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-scripts": "1.1.4",
+    "vega-embed": "^3.9.0",
+    "vega-lite": "^2.4.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
