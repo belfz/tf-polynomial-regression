@@ -1,43 +1,25 @@
 import React, { Component } from 'react';
 import renderChart from 'vega-embed';
-
-const createVegaSpec = (values) => ({
-  $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
-  width: 300,
-  height: 300,
-  data: { values },
-  layer: [
-    {
-      mark: 'point',
-      encoding: {
-        x: {field: 'x', type: 'quantitative'},
-        y: {field: 'y', type: 'quantitative'}
-      }
-    },
-    {
-      mark: 'line',
-      encoding: {
-        x: {field: 'x', type: 'quantitative'},
-        y: {field: 'pred', type: 'quantitative'},
-        color: {value: 'tomato'}
-      },
-    }
-  ]
-});
+import { createDataSpec, createErrorSpec } from '../vega/vegaSpecs';
 
 class DataPlot extends Component {
   componentDidUpdate () {
-    this.createView();
+    this.createChart();
+    this.createErrorChart();
   }
 
-  createView () {
+  createChart () {
     const { xs, ys, predictions } = this.props;
-
-    const values = Array.from(ys).map((y, i) => {
-      return {'x': xs[i], 'y': ys[i], pred: predictions[i]};
-    });
+    const values = Array.from(ys).map((y, i) => ({x: xs[i], y: ys[i], pred: predictions[i]}));
  
-    return renderChart(this.chart, createVegaSpec(values), { actions: false });
+    return renderChart(this.chart, createDataSpec(values), { actions: false });
+  }
+
+  createErrorChart () {
+    const { error } = this.props;
+    const values = error.map((e, i) => ({iterations: i, error_value: e}));
+
+    return renderChart(this.errorChart, createErrorSpec(values), { actions: false });
   }
 
   render () {
@@ -50,10 +32,13 @@ class DataPlot extends Component {
           <span>b={b.toFixed(3)}, </span>
           <span>c={c.toFixed(3)}, </span>
           <span>d={d.toFixed(3)}, </span>
-          <span className="caption">error: </span><span>{iteration === 0 ? 'N/A': error}, </span>
+          <span className="caption">error: </span><span>{iteration === 0 ? 'N/A': error[error.length - 1]}, </span>
           <span className="caption">iteration: </span><span>{iteration}</span>
         </div>
-        <div ref={chart => this.chart = chart}></div>
+        <div className="charts-container">
+          <div ref={chart => this.chart = chart}></div>
+          <div ref={errorChart => this.errorChart = errorChart}></div>
+        </div>
       </div>
     );
   }

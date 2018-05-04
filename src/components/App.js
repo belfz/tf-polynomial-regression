@@ -15,7 +15,7 @@ class App extends Component {
       b: tf.variable(tf.scalar(Math.random())),
       c: tf.variable(tf.scalar(Math.random())),
       d: tf.variable(tf.scalar(Math.random())),
-      error: 0,
+      error: [],
       isTraining: false,
       iteration: 0,
       learningRate: 0.5,
@@ -60,7 +60,7 @@ class App extends Component {
       const predictionsAsArray = predictions.clone().dataSync();
       const error = this.loss(predictions, ys);
       const errorValue = error.dataSync()[0];
-      this.setState(({ iteration }) => ({ error: errorValue, iteration: iteration + 1, predictions: predictionsAsArray }));
+      this.setState(({ iteration, error }) => ({ error: error.concat(errorValue), iteration: iteration + 1, predictions: predictionsAsArray }));
       this.forceUpdate(); // need to do that because a, b, c, d are "magically" updated here
       return error;
     });

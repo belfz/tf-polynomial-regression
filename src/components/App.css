@@ -1,3 +1,6 @@
 .caption {
   font-weight: bold;
 }
+.charts-container {
+  display: flex;
+}
