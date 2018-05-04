@@ -5,9 +5,9 @@ import styled from 'styled-components';
 const roundNumber = (number, round) => round === 0 ? number : number.toFixed(round);
 
 const NumericParameter = ({ children, className, label, value, round = 3 }) => {
-  const sanitizedValue = typeof value === 'string' ?
-    value
-    : roundNumber(value, round);
+  const sanitizedValue = typeof value === 'number' ?
+  roundNumber(value, round)
+  : value;
   return (
     <span className={className}>
       <InlineCaption>{label}: </InlineCaption>
