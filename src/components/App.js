@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as tf from '@tensorflow/tfjs';
-import './App.css';
 import DataPlot from './DataPlot';
 import LearningRateSelector from './LearningRateSelector';
 import PlayButton from './PlayButton';
@@ -113,8 +112,8 @@ class App extends Component {
           isTraining={this.state.isTraining}
           onClick={this.playToggle.bind(this)}
         />
-        <button onClick={() => this.reset()}>reset</button>
-        <button disabled={this.state.isTraining} onClick={() => {
+        <button className="btn" onClick={() => this.reset()}>reset</button>
+        <button className="btn" disabled={this.state.isTraining} onClick={() => {
           const { xs, ys } = this.state.trainingData;
           this.train(xs, ys);
         }}>step+</button>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import renderChart from 'vega-embed';
+import InlineCaption from './InlineCaption';
 import { createDataSpec, createErrorSpec } from '../vega/vegaSpecs';
 
 class DataPlot extends Component {
@@ -34,18 +36,18 @@ class DataPlot extends Component {
   }
 
   render () {
-    const { a, b, c, d, error, iteration, testError } = this.props;
+    const { a, b, c, d, error, iteration, testError, className } = this.props;
     return (
-      <div>
+      <div className={className}>
         <div>
-          <span className="caption">coefficients: </span>
+          <InlineCaption>coefficients: </InlineCaption>
           <span>a={a.toFixed(3)}, </span>
           <span>b={b.toFixed(3)}, </span>
           <span>c={c.toFixed(3)}, </span>
           <span>d={d.toFixed(3)}, </span>
-          <span className="caption">training error: </span><span>{iteration === 0 ? 'N/A': error[error.length - 1].toFixed(3)}, </span>
-          <span className="caption">test error: </span><span>{iteration === 0 ? 'N/A': testError[testError.length - 1].toFixed(3)}, </span>
-          <span className="caption">iteration: </span><span>{iteration}</span>
+          <InlineCaption>training error: </InlineCaption><span>{iteration === 0 ? 'N/A': error[error.length - 1].toFixed(3)}, </span>
+          <InlineCaption>test error: </InlineCaption><span>{iteration === 0 ? 'N/A': testError[testError.length - 1].toFixed(3)}, </span>
+          <InlineCaption>iteration: </InlineCaption><span>{iteration}</span>
         </div>
         <div className="charts-container">
           <div ref={chart => this.chart = chart}></div>
@@ -57,4 +59,8 @@ class DataPlot extends Component {
   }
 }
 
-export default DataPlot;
+export default styled(DataPlot)`
+  .charts-container {
+    display: flex;
+  }
+`;
