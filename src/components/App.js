@@ -118,10 +118,8 @@ class App extends Component {
           iteration={this.state.iteration}
           predictions={this.state.predictions}
           showTestData={this.state.showTestData}
-          trainXs={this.state.trainingData.xs.dataSync()}
-          trainYs={this.state.trainingData.ys.dataSync()}
-          testXs={this.state.testData.xs.dataSync()}
-          testYs={this.state.testData.ys.dataSync()}
+          trainingData={this.state.trainingData}
+          testData={this.state.testData}
         />
       </div>
     );
