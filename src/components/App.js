@@ -36,8 +36,8 @@ class App extends Component {
 
   componentDidMount () {
     this.optimizer = tf.train.sgd(this.state.learningRate);
-    this.setState(({ trainingData }) => ({
-      predictions: this.predict(trainingData.xs).dataSync()
+    this.setState(({ trainingData, a, b, c, d }) => ({
+      predictions: this.predict(trainingData.xs, a, b, c, d).dataSync()
     }));
   }
 
@@ -46,13 +46,13 @@ class App extends Component {
     return prediction.sub(labels).square().mean();
   }
 
-  predict (x) {
+  predict (xs, a, b, c, d) {
     // y = a * x ^ 3 + b * x ^ 2 + c * x + d
     return tf.tidy(() => {
-      return this.state.a.mul(x.pow(tf.scalar(3, 'int32')))
-        .add(this.state.b.mul(x.square()))
-        .add(this.state.c.mul(x))
-        .add(this.state.d);
+      return a.mul(xs.pow(tf.scalar(3, 'int32')))
+        .add(b.mul(xs.square()))
+        .add(c.mul(xs))
+        .add(d);
     });
   }
 
@@ -66,7 +66,7 @@ class App extends Component {
 
   train (xs, ys) {
     this.optimizer.minimize(() => {
-      const predictions = this.predict(xs);
+      const predictions = this.predict(xs, this.state.a, this.state.b, this.state.c, this.state.d);
       const predictionsAsArray = predictions.dataSync();
       const error = this.loss(predictions, ys);
       const errorValue = error.dataSync()[0];
@@ -88,7 +88,8 @@ class App extends Component {
 
   reset () {
     const newState = App.resetState();
-    const predictions = this.predict(newState.trainingData.xs).dataSync();
+    const { trainingData, a, b, c, d } = newState;
+    const predictions = this.predict(trainingData.xs, a, b, c, d).dataSync();
     this.setState(() => Object.assign(newState, { predictions }));
   }
 
