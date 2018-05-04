@@ -8,9 +8,10 @@ import { generateData } from '../tensorflow/data';
 const trueCoefficients = {a: -.8, b: -.2, c: .9, d: .5};
 
 // TODO
-// one-step button
 // learningRate picker (also: does the reset action)
+// test data + predictions
 // style
+// * styled components
 
 class App extends Component {
   static resetState (learningRate = 0.5) {
@@ -66,7 +67,7 @@ class App extends Component {
   train (xs, ys) {
     this.optimizer.minimize(() => {
       const predictions = this.predict(xs);
-      const predictionsAsArray = predictions.clone().dataSync();
+      const predictionsAsArray = predictions.dataSync();
       const error = this.loss(predictions, ys);
       const errorValue = error.dataSync()[0];
       this.setState(({ iteration, error }) => ({ error: error.concat(errorValue), iteration: iteration + 1, predictions: predictionsAsArray }));
@@ -111,6 +112,10 @@ class App extends Component {
           onClick={this.playToggle.bind(this)}
         />
         <button onClick={this.reset.bind(this)}>reset</button>
+        <button disabled={this.state.isTraining} onClick={() => {
+          const { xs, ys } = this.state.trainingData;
+          this.train(xs, ys);
+        }}>step+</button>
       </div>
     );
   }
