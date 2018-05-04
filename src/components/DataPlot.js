@@ -32,7 +32,7 @@ class DataPlot extends Component {
           <span>b={b.toFixed(3)}, </span>
           <span>c={c.toFixed(3)}, </span>
           <span>d={d.toFixed(3)}, </span>
-          <span className="caption">error: </span><span>{iteration === 0 ? 'N/A': error[error.length - 1]}, </span>
+          <span className="caption">error: </span><span>{iteration === 0 ? 'N/A': error[error.length - 1].toFixed(3)}, </span>
           <span className="caption">iteration: </span><span>{iteration}</span>
         </div>
         <div className="charts-container">
