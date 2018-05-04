@@ -18,7 +18,7 @@ class App extends Component {
       b: tf.variable(tf.scalar(Math.random())),
       c: tf.variable(tf.scalar(Math.random())),
       d: tf.variable(tf.scalar(Math.random())),
-      error: [],
+      trainingError: [],
       testError: [],
       isTraining: false,
       iteration: 0,
@@ -72,10 +72,10 @@ class App extends Component {
     this.optimizer.minimize(() => {
       const predictions = this.predict(xs, this.state.a, this.state.b, this.state.c, this.state.d);
       const predictionsValue = predictions.dataSync();
-      const error = this.loss(predictions, ys);
-      const errorValue = error.dataSync()[0];
-      this.setState(({ iteration, error }) => ({ error: error.concat(errorValue), iteration: iteration + 1, predictions: predictionsValue }));
-      return error;
+      const trainingError = this.loss(predictions, ys);
+      const trainingErrorValue = trainingError.dataSync()[0];
+      this.setState(({ iteration, trainingError }) => ({ trainingError: trainingError.concat(trainingErrorValue), iteration: iteration + 1, predictions: predictionsValue }));
+      return trainingError;
     });
     
     const { testData } = this.state;
@@ -99,27 +99,23 @@ class App extends Component {
   }
 
   render () {
+    const { a, b, c, d, isTraining, learningRate, showTestData, ...otherState } = this.state;
     return (
       <div>
-        <LearningRateSelector learningRate={this.state.learningRate} onChange={(e) => this.reset(parseFloat(e.target.value))} />
+        <LearningRateSelector learningRate={learningRate} onChange={(e) => this.reset(parseFloat(e.target.value))} />
         <span>show test data:
-          <input type="checkbox" checked={this.state.showTestData} onChange={(e) => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))} />
+          <input type="checkbox" checked={showTestData} onChange={(e) => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))} />
         </span>
-        <Button onClick={this.playToggle.bind(this)}>{this.state.isTraining ? 'stop' : 'train'}</Button>
+        <Button onClick={this.playToggle.bind(this)}>{isTraining ? 'stop' : 'train'}</Button>
         <Button className="btn" onClick={() => this.reset()}>reset</Button>
-        <Button className="btn" disabled={this.state.isTraining} onClick={this.singleStepTrain.bind(this)}>step+</Button>
+        <Button className="btn" disabled={isTraining} onClick={this.singleStepTrain.bind(this)}>step+</Button>
         <DataPlot
-          a={this.state.a.dataSync()[0]}
-          b={this.state.b.dataSync()[0]}
-          c={this.state.c.dataSync()[0]}
-          d={this.state.d.dataSync()[0]}
-          error={this.state.error}
-          testError={this.state.testError}
-          iteration={this.state.iteration}
-          predictions={this.state.predictions}
-          showTestData={this.state.showTestData}
-          trainingData={this.state.trainingData}
-          testData={this.state.testData}
+          a={a.dataSync()[0]}
+          b={b.dataSync()[0]}
+          c={c.dataSync()[0]}
+          d={d.dataSync()[0]}
+          showTestData={showTestData}
+          {...otherState}
         />
       </div>
     );
