@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import './App.css';
 import DataPlot from './DataPlot';
+import LearningRateSelector from './LearningRateSelector';
 import PlayButton from './PlayButton';
 import { generateData } from '../tensorflow/data';
 
 const trueCoefficients = {a: -.8, b: -.2, c: .9, d: .5};
 
 // TODO
-// learningRate picker (also: does the reset action)
 // test data + predictions
 // style
 // * styled components
@@ -86,8 +86,8 @@ class App extends Component {
     });
   }
 
-  reset () {
-    const newState = App.resetState();
+  reset (learningRate) {
+    const newState = App.resetState(learningRate);
     const { trainingData, a, b, c, d } = newState;
     const predictions = this.predict(trainingData.xs, a, b, c, d).dataSync();
     this.setState(() => Object.assign(newState, { predictions }));
@@ -107,12 +107,14 @@ class App extends Component {
           xs={this.state.trainingData.xs.dataSync()}
           ys={this.state.trainingData.ys.dataSync()}
         />
-        {/* buttons: at least one button (run/stop), step+1, reset */}
+        <span>learning rate: 
+          <LearningRateSelector learningRate={this.state.learningRate} onChange={(e) => this.reset(parseFloat(e.target.value))} />
+        </span>
         <PlayButton
           isTraining={this.state.isTraining}
           onClick={this.playToggle.bind(this)}
         />
-        <button onClick={this.reset.bind(this)}>reset</button>
+        <button onClick={() => this.reset()}>reset</button>
         <button disabled={this.state.isTraining} onClick={() => {
           const { xs, ys } = this.state.trainingData;
           this.train(xs, ys);
