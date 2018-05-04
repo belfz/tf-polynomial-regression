@@ -45,11 +45,12 @@ class DataPlot extends Component {
     return (
       <div>
         <div>
-          <span>a: {a.toFixed(3)}</span>
-          <span>b: {b.toFixed(3)}</span>
-          <span>c: {c.toFixed(3)}</span>
-          <span>d: {d.toFixed(3)}</span>
-          <span>iteration: {iteration}</span>
+          <span className="caption">coefficients: </span>
+          <span>a={a.toFixed(3)}, </span>
+          <span>b={b.toFixed(3)}, </span>
+          <span>c={c.toFixed(3)}, </span>
+          <span>d={d.toFixed(3)}, </span>
+          <span className="caption">iteration: </span><span>{iteration}</span>
         </div>
         <div ref={chart => this.chart = chart}></div>
       </div>
