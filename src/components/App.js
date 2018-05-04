@@ -7,10 +7,14 @@ import { generateData } from '../tensorflow/data';
 
 const trueCoefficients = {a: -.8, b: -.2, c: .9, d: .5};
 
+// TODO
+// one-step button
+// learningRate picker (also: does the reset action)
+// style
+
 class App extends Component {
-  constructor () {
-    super();
-    this.state = {
+  static resetState (learningRate = 0.5) {
+    return {
       a: tf.variable(tf.scalar(Math.random())),
       b: tf.variable(tf.scalar(Math.random())),
       c: tf.variable(tf.scalar(Math.random())),
@@ -18,10 +22,15 @@ class App extends Component {
       error: [],
       isTraining: false,
       iteration: 0,
-      learningRate: 0.5,
+      learningRate,
       predictions: new Float32Array(),
       trainingData: generateData(100, trueCoefficients)
     };
+  }
+
+  constructor () {
+    super();
+    this.state = App.resetState();
   }
 
   componentDidMount () {
@@ -76,6 +85,12 @@ class App extends Component {
     });
   }
 
+  reset () {
+    const newState = App.resetState();
+    const predictions = this.predict(newState.trainingData.xs).dataSync();
+    this.setState(() => Object.assign(newState, { predictions }));
+  }
+
   render () {
     return (
       <div>
@@ -95,6 +110,7 @@ class App extends Component {
           isTraining={this.state.isTraining}
           onClick={this.playToggle.bind(this)}
         />
+        <button onClick={this.reset.bind(this)}>reset</button>
       </div>
     );
   }
