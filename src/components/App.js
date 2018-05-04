@@ -94,7 +94,7 @@ class App extends Component {
     });
   }
 
-  reset (learningRate) {
+  reset (learningRate = this.state.learningRate) {
     this.setState(() => App.resetState(learningRate), () => this.singleStepTrain());
   }
 
