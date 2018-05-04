@@ -37,10 +37,7 @@ class App extends Component {
 
   componentDidMount () {
     this.optimizer = tf.train.sgd(this.state.learningRate);
-    this.setState(({ trainingData, a, b, c, d }) => ({
-      predictions: this.predict(trainingData.xs, a, b, c, d).dataSync()
-    }));
-    // INITIAL PLOT SHOULD DO AT LEAST ONE PREDICTION AND MEASURE BOTH ERRORS!
+    this.singleStepTrain();
   }
 
   loss (prediction, labels) {
@@ -98,10 +95,7 @@ class App extends Component {
   }
 
   reset (learningRate) {
-    const blankState = App.resetState(learningRate);
-    const { trainingData, a, b, c, d } = blankState;
-    const predictions = this.predict(trainingData.xs, a, b, c, d).dataSync();
-    this.setState(() => Object.assign(blankState, { predictions }));
+    this.setState(() => App.resetState(learningRate), () => this.singleStepTrain());
   }
 
   render () {
