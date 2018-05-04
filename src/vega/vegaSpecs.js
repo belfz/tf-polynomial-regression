@@ -1,5 +1,7 @@
+const $schema = 'https://vega.github.io/schema/vega-lite/v2.json';
+
 export const createDataSpec = (values) => ({
-  $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+  $schema,
   width: 300,
   height: 300,
   data: { values },
@@ -7,14 +9,23 @@ export const createDataSpec = (values) => ({
     {
       mark: 'point',
       encoding: {
-        x: {field: 'x', type: 'quantitative'},
-        y: {field: 'y', type: 'quantitative'}
+        x: {field: 'testX', type: 'quantitative'},
+        y: {field: 'testY', type: 'quantitative'},
+        color: {value: 'green'}
+      },
+    },
+    {
+      mark: 'point',
+      encoding: {
+        x: {field: 'trainX', type: 'quantitative'},
+        y: {field: 'trainY', type: 'quantitative'},
+        color: {value: 'grey'}
       }
     },
     {
       mark: 'line',
       encoding: {
-        x: {field: 'x', type: 'quantitative'},
+        x: {field: 'trainX', type: 'quantitative'},
         y: {field: 'pred', type: 'quantitative'},
         color: {value: 'tomato'}
       },
@@ -22,17 +33,17 @@ export const createDataSpec = (values) => ({
   ]
 });
 
-export const createErrorSpec = (values) => ({
-  $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
-  width: 150,
-  height: 150,
+export const createErrorSpec = (errorFieldName, values) => ({
+  $schema,
+  width: 100,
+  height: 100,
   data: { values },
   layer: [
     {
       mark: 'line',
       encoding: {
         x: {field: 'iterations', type: 'quantitative'},
-        y: {field: 'error_value', type: 'quantitative'},
+        y: {field: errorFieldName, type: 'quantitative'},
         color: {value: 'blue'}
       },
     }

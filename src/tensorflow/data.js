@@ -17,7 +17,8 @@
 
 import * as tf from '@tensorflow/tfjs';
 
-export function generateData(numPoints, coeff, sigma = 0.04) {
+export function generateData(coeff, sigma = 0.04) {
+  const numPoints = 120;
   return tf.tidy(() => {
     const [a, b, c, d] = [
       tf.scalar(coeff.a), tf.scalar(coeff.b), tf.scalar(coeff.c),
@@ -42,9 +43,16 @@ export function generateData(numPoints, coeff, sigma = 0.04) {
     const yrange = ymax.sub(ymin);
     const ysNormalized = ys.sub(ymin).div(yrange);
 
+    const trainXs = xs.slice(0, 100);
+    const testXs  = xs.slice(100);
+    const trainYs = ysNormalized.slice(0, 100);
+    const testYs  = ysNormalized.slice(100);
+
     return {
-      xs, 
-      ys: ysNormalized
+      trainXs,
+      trainYs,
+      testXs,
+      testYs
     };
   })
 }
