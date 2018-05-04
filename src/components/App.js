@@ -101,9 +101,7 @@ class App extends Component {
   render () {
     return (
       <div>
-        <span>learning rate: 
-          <LearningRateSelector learningRate={this.state.learningRate} onChange={(e) => this.reset(parseFloat(e.target.value))} />
-        </span>
+        <LearningRateSelector learningRate={this.state.learningRate} onChange={(e) => this.reset(parseFloat(e.target.value))} />
         <span>show test data:
           <input type="checkbox" checked={this.state.showTestData} onChange={(e) => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))} />
         </span>
