@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import * as tf from '@tensorflow/tfjs';
+import Button from './Button';
+import Checkbox from './Checkbox';
 import DataPlot from './DataPlot';
 import LearningRateSelector from './LearningRateSelector';
-import Button from './Button';
 import { generateData } from '../tensorflow/data';
 
 const trueCoefficients = {a: -.8, b: -.2, c: .9, d: .5};
@@ -102,10 +103,8 @@ class App extends Component {
     const { a, b, c, d, isTraining, learningRate, showTestData, ...otherState } = this.state;
     return (
       <div>
-        <LearningRateSelector learningRate={learningRate} onChange={(e) => this.reset(parseFloat(e.target.value))} />
-        <span>show test data:
-          <input type="checkbox" checked={showTestData} onChange={(e) => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))} />
-        </span>
+        <LearningRateSelector learningRate={learningRate} onChange={({ target }) => this.reset(parseFloat(target.value))} />
+        <Checkbox checked={showTestData} onChange={() => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))}>show test data:</Checkbox>
         <Button onClick={this.playToggle.bind(this)}>{isTraining ? 'stop' : 'train'}</Button>
         <Button className="btn" onClick={() => this.reset()}>reset</Button>
         <Button className="btn" disabled={isTraining} onClick={this.singleStepTrain.bind(this)}>step+</Button>
