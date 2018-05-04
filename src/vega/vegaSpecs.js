@@ -23,7 +23,11 @@ export const createDataSpec = (values) => ({
       }
     },
     {
-      mark: 'line',
+      mark: {
+        orient: 'vertical',
+        type: 'line' 
+      },
+      orient: 'vertical',
       encoding: {
         x: {field: 'trainX', type: 'quantitative'},
         y: {field: 'pred', type: 'quantitative'},
@@ -40,7 +44,10 @@ export const createErrorSpec = (errorFieldName, values) => ({
   data: { values },
   layer: [
     {
-      mark: 'line',
+      mark: {
+        orient: 'vertical',
+        type: 'line' 
+      },
       encoding: {
         x: {field: 'iterations', type: 'quantitative'},
         y: {field: errorFieldName, type: 'quantitative'},
