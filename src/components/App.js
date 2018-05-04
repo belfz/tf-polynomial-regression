@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import DataPlot from './DataPlot';
 import LearningRateSelector from './LearningRateSelector';
-import PlayButton from './PlayButton';
+import Button from './Button';
 import { generateData } from '../tensorflow/data';
 
 const trueCoefficients = {a: -.8, b: -.2, c: .9, d: .5};
 
 // TODO
 // style
-// * styled components
 
 class App extends Component {
   static resetState (learningRate = 0.5) {
@@ -41,6 +40,7 @@ class App extends Component {
     this.setState(({ trainingData, a, b, c, d }) => ({
       predictions: this.predict(trainingData.xs, a, b, c, d).dataSync()
     }));
+    // INITIAL PLOT SHOULD DO AT LEAST ONE PREDICTION AND MEASURE BOTH ERRORS!
   }
 
   loss (prediction, labels) {
@@ -64,6 +64,11 @@ class App extends Component {
       // Use tf.nextFrame to not block the browser.
       await tf.nextFrame();
     }
+  }
+
+  singleStepTrain () {
+    const { xs, ys } = this.state.trainingData;
+    this.train(xs, ys);
   }
 
   train (xs, ys) {
@@ -108,15 +113,9 @@ class App extends Component {
         <span>show test data:
           <input type="checkbox" checked={this.state.showTestData} onChange={(e) => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))} />
         </span>
-        <PlayButton
-          isTraining={this.state.isTraining}
-          onClick={this.playToggle.bind(this)}
-        />
-        <button className="btn" onClick={() => this.reset()}>reset</button>
-        <button className="btn" disabled={this.state.isTraining} onClick={() => {
-          const { xs, ys } = this.state.trainingData;
-          this.train(xs, ys);
-        }}>step+</button>
+        <Button onClick={this.playToggle.bind(this)}>{this.state.isTraining ? 'stop' : 'train'}</Button>
+        <Button className="btn" onClick={() => this.reset()}>reset</Button>
+        <Button className="btn" disabled={this.state.isTraining} onClick={this.singleStepTrain.bind(this)}>step+</Button>
         <DataPlot
           a={this.state.a.dataSync()[0]}
           b={this.state.b.dataSync()[0]}
