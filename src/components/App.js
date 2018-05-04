@@ -69,10 +69,10 @@ class App extends Component {
   train (xs, ys) {
     this.optimizer.minimize(() => {
       const predictions = this.predict(xs, this.state.a, this.state.b, this.state.c, this.state.d);
-      const predictionsAsArray = predictions.dataSync();
+      const predictionsValue = predictions.dataSync();
       const error = this.loss(predictions, ys);
       const errorValue = error.dataSync()[0];
-      this.setState(({ iteration, error }) => ({ error: error.concat(errorValue), iteration: iteration + 1, predictions: predictionsAsArray }));
+      this.setState(({ iteration, error }) => ({ error: error.concat(errorValue), iteration: iteration + 1, predictions: predictionsValue }));
       return error;
     });
     
@@ -93,10 +93,10 @@ class App extends Component {
   }
 
   reset (learningRate) {
-    const newState = App.resetState(learningRate);
-    const { trainingData, a, b, c, d } = newState;
+    const blankState = App.resetState(learningRate);
+    const { trainingData, a, b, c, d } = blankState;
     const predictions = this.predict(trainingData.xs, a, b, c, d).dataSync();
-    this.setState(() => Object.assign(newState, { predictions }));
+    this.setState(() => Object.assign(blankState, { predictions }));
   }
 
   render () {
