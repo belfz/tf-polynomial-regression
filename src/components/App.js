@@ -15,6 +15,7 @@ class App extends Component {
       b: tf.variable(tf.scalar(Math.random())),
       c: tf.variable(tf.scalar(Math.random())),
       d: tf.variable(tf.scalar(Math.random())),
+      error: 0,
       isTraining: false,
       iteration: 0,
       learningRate: 0.5,
@@ -57,8 +58,9 @@ class App extends Component {
     this.optimizer.minimize(() => {
       const predictions = this.predict(xs);
       const predictionsAsArray = predictions.clone().dataSync();
-      this.setState(({ iteration }) => ({ predictions: predictionsAsArray, iteration: iteration + 1 }));
-      const error = this.loss(predictions, ys); // TODO eventually plot it, too
+      const error = this.loss(predictions, ys);
+      const errorValue = error.dataSync()[0];
+      this.setState(({ iteration }) => ({ error: errorValue, iteration: iteration + 1, predictions: predictionsAsArray }));
       this.forceUpdate(); // need to do that because a, b, c, d are "magically" updated here
       return error;
     });
@@ -82,6 +84,7 @@ class App extends Component {
           b={this.state.b.dataSync()[0]}
           c={this.state.c.dataSync()[0]}
           d={this.state.d.dataSync()[0]}
+          error={this.state.error}
           iteration={this.state.iteration}
           predictions={this.state.predictions}
           xs={this.state.trainingData.xs.dataSync()}

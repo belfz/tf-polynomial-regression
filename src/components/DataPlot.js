@@ -41,7 +41,7 @@ class DataPlot extends Component {
   }
 
   render () {
-    const { a, b, c, d, iteration } = this.props;
+    const { a, b, c, d, error, iteration } = this.props;
     return (
       <div>
         <div>
@@ -50,6 +50,7 @@ class DataPlot extends Component {
           <span>b={b.toFixed(3)}, </span>
           <span>c={c.toFixed(3)}, </span>
           <span>d={d.toFixed(3)}, </span>
+          <span className="caption">error: </span><span>{iteration === 0 ? 'N/A': error}, </span>
           <span className="caption">iteration: </span><span>{iteration}</span>
         </div>
         <div ref={chart => this.chart = chart}></div>
