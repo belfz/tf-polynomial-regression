@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as tf from '@tensorflow/tfjs';
-import Button from './Button';
-import Checkbox from './Checkbox';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Checkbox from 'material-ui/Checkbox';
+import FlatButton from 'material-ui/FlatButton';
 import DataPlot from './DataPlot';
 import LearningRateSelector from './LearningRateSelector';
 import { generateData } from '../tensorflow/data';
@@ -102,21 +103,23 @@ class App extends Component {
   render () {
     const { a, b, c, d, isTraining, learningRate, showTestData, ...otherState } = this.state;
     return (
-      <div>
-        <LearningRateSelector learningRate={learningRate} onChange={({ target }) => this.reset(parseFloat(target.value))} />
-        <Checkbox checked={showTestData} onChange={() => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))}>show test data:</Checkbox>
-        <Button onClick={this.playToggle.bind(this)}>{isTraining ? 'stop' : 'train'}</Button>
-        <Button className="btn" onClick={() => this.reset()}>reset</Button>
-        <Button className="btn" disabled={isTraining} onClick={this.singleStepTrain.bind(this)}>step+</Button>
-        <DataPlot
-          a={a.dataSync()[0]}
-          b={b.dataSync()[0]}
-          c={c.dataSync()[0]}
-          d={d.dataSync()[0]}
-          showTestData={showTestData}
-          {...otherState}
-        />
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <LearningRateSelector learningRate={learningRate} onChange={(e, i, value) => this.reset(value)} />
+          <Checkbox label="show test data" checked={showTestData} onCheck={() => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))} />
+          <FlatButton label={isTraining ? 'stop' : 'train'} onClick={this.playToggle.bind(this)} />
+          <FlatButton label="reset" onClick={() => this.reset()} secondary={true} />
+          <FlatButton label="step+" disabled={isTraining} onClick={this.singleStepTrain.bind(this)} />
+          <DataPlot
+            a={a.dataSync()[0]}
+            b={b.dataSync()[0]}
+            c={c.dataSync()[0]}
+            d={d.dataSync()[0]}
+            showTestData={showTestData}
+            {...otherState}
+          />
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
