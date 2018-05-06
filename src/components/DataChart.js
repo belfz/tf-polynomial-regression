@@ -18,7 +18,7 @@ class DataChart extends Component {
       trainValues.concat(Array.from(testYs).map((y, i) => ({testX: testXs[i], testY: testYs[i]})))
       : trainValues;
  
-    return renderChart(this.dataChart, createDataSpec(values), { actions: false });
+    return renderChart(this.dataChart, createDataSpec(values, showTestData), { actions: false });
   }
 
   render () {
