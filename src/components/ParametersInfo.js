@@ -1,5 +1,6 @@
 import React from 'react';
 import NumericParameter from './NumericParameter';
+import styled from 'styled-components';
 
 const ParametersInfo = ({ a, b, c, d, error, iteration, testError }) =>
   <div>
@@ -12,4 +13,6 @@ const ParametersInfo = ({ a, b, c, d, error, iteration, testError }) =>
     <NumericParameter label="iteration" value={iteration} round={0} />
   </div>;
 
-export default ParametersInfo;
+export default styled(ParametersInfo)`
+  margin-bottom: 1em;
+`;

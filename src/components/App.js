@@ -3,6 +3,8 @@ import * as tf from '@tensorflow/tfjs';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Checkbox from 'material-ui/Checkbox';
 import FlatButton from 'material-ui/FlatButton';
+import Paper from 'material-ui/Paper';
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
 import DataPlot from './DataPlot';
 import LearningRateSelector from './LearningRateSelector';
 import { generateData } from '../tensorflow/data';
@@ -104,12 +106,19 @@ class App extends Component {
     const { a, b, c, d, isTraining, learningRate, showTestData, ...otherState } = this.state;
     return (
       <MuiThemeProvider>
-        <div>
-          <LearningRateSelector learningRate={learningRate} onChange={(e, i, value) => this.reset(value)} />
-          <Checkbox label="show test data" checked={showTestData} onCheck={() => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))} />
-          <FlatButton label={isTraining ? 'stop' : 'train'} onClick={this.playToggle.bind(this)} />
-          <FlatButton label="reset" onClick={() => this.reset()} secondary={true} />
-          <FlatButton label="step+" disabled={isTraining} onClick={this.singleStepTrain.bind(this)} />
+        <Paper style={{margin: '0 15%', height: '90vh'}} zDepth={2}>
+          <Toolbar>
+            <ToolbarGroup>
+              <LearningRateSelector learningRate={learningRate} onChange={(e, i, value) => this.reset(value)} />
+              <Checkbox label="show test data" checked={showTestData} onCheck={() => this.setState(({ showTestData }) => ({ showTestData: !showTestData }))} />
+            </ToolbarGroup>
+            <ToolbarGroup>
+              <ToolbarSeparator />
+              <FlatButton label={isTraining ? 'stop' : 'train'} onClick={this.playToggle.bind(this)} />
+              <FlatButton label="reset" onClick={() => this.reset()} secondary={true} />
+              <FlatButton label="step+" disabled={isTraining} onClick={this.singleStepTrain.bind(this)} />
+            </ToolbarGroup>
+          </Toolbar>
           <DataPlot
             a={a.dataSync()[0]}
             b={b.dataSync()[0]}
@@ -118,7 +127,7 @@ class App extends Component {
             showTestData={showTestData}
             {...otherState}
           />
-        </div>
+        </Paper>
       </MuiThemeProvider>
     );
   }
