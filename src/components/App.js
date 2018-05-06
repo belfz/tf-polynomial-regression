@@ -103,7 +103,7 @@ class App extends Component {
     const { a, b, c, d, isTraining, learningRate, showTestData, ...otherState } = this.state;
     return (
       <MuiThemeProvider>
-        <Paper style={{margin: '0 15%', height: '90vh'}} zDepth={2}>
+        <Paper style={{height: '90vh'}} zDepth={2}>
           <Toolbar>
             <ToolbarGroup>
               <LearningRateSelector learningRate={learningRate} onChange={(e, i, value) => this.reset(value)} />
