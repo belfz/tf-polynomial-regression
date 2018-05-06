@@ -11,9 +11,6 @@ import { generateData } from '../tensorflow/data';
 
 const trueCoefficients = {a: -.8, b: -.2, c: .9, d: .5};
 
-// TODO
-// style
-
 class App extends Component {
   static resetState (learningRate = 0.5) {
     const { trainXs, trainYs, testXs, testYs } = generateData(trueCoefficients);

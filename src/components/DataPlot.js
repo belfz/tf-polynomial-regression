@@ -19,7 +19,7 @@ const DataPlot = ({ className, a, b, c, d, trainingError, iteration, predictions
 }
 
 export default styled(DataPlot)`
-  padding: 1em;
+  padding: 1.3em;
   .charts-container {
     display: flex;
   }
