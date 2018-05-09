@@ -96,7 +96,10 @@ class App extends Component {
   }
 
   reset (learningRate = this.state.learningRate) {
-    this.setState(() => App.resetState(learningRate), () => this.singleStepTrain());
+    this.setState(() => App.resetState(learningRate), () => {
+      this.optimizer = tf.train.sgd(this.state.learningRate);
+      this.singleStepTrain();
+    });
   }
 
   render () {
